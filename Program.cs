@@ -1,11 +1,19 @@
 ﻿    using System.Diagnostics;
-
-
-
 using System.Diagnostics;
+using System.Net;
+using System.Net.Http.Headers;
+
+using Tools;
+using Octokit;
+
 using static System.Console;
 Console.WriteLine("Hello, World!");
 
+DotnetMakePackages maker = new();
+maker.Run();
+
+var publisher = new GitHubReleasePublisher("DJDQfff" , "EroMangaManager");
+await publisher.PublishAsync("2026.5.16" , maker.Files);
 static void CheckNonOrigin()
 {
     Console.WriteLine("Hello, World!");
