@@ -13,7 +13,7 @@ DotnetMakePackages maker = new();
 maker.Run();
 
 var publisher = new GitHubReleasePublisher("DJDQfff" , "EroMangaManager");
-await publisher.PublishAsync("2026.5.16" , maker.Files);
+await publisher.PublishAsync("2026.5.18" , maker.Files);
 static void CheckNonOrigin()
 {
     Console.WriteLine("Hello, World!");
