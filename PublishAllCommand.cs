@@ -8,7 +8,7 @@ public class DotnetMakePackages
 {
     public   List<string> Files { get; } = [];
 
-    public  void Run ()
+    public  void Run (string version)
     {
         var packtool = Directory.GetDirectories("C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages\\microsoft.windows.sdk.buildtools\\" , "x64" , new EnumerationOptions() { RecurseSubdirectories = true }).First();
         var makeappx = Directory.GetFiles(packtool).Single( x => x.EndsWith("makeappx.exe"));
@@ -22,7 +22,7 @@ public class DotnetMakePackages
         var publishDirectory = new  DirectoryInfo("E:\\Projects\\EroMangaManager\\publish");
         string pfxPath = "E:\\Projects\\EroMangaManager\\DJDQfff_new.pfx";
         string pfxPassword = Environment.GetEnvironmentVariable("MADAO_PASSWORD");
-        string msixbundleFIle = "E:\\Projects\\EroMangaManager\\publish\\upload.msixbundle";
+        string msixbundleFIle = $"E:\\Projects\\EroMangaManager\\publish\\{version}.msixbundle";
         var platforms = new string[] { "x64" , "x86" , "ARM64" };
         var runtimeidentifiers_android = new string[] { "android-arm64" , "android-arm" };
         var rids = new Dictionary<string , string>

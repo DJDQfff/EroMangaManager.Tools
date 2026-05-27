@@ -9,11 +9,12 @@ using Octokit;
 using static System.Console;
 Console.WriteLine("Hello, World!");
 
+var version = "2026.5.24";
 DotnetMakePackages maker = new();
-maker.Run();
+maker.Run(version);
 
 var publisher = new GitHubReleasePublisher("DJDQfff" , "EroMangaManager");
-await publisher.PublishAsync("2026.5.18" , maker.Files);
+await publisher.PublishAsync( version, maker.Files);
 static void CheckNonOrigin()
 {
     Console.WriteLine("Hello, World!");
