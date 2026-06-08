@@ -10,15 +10,15 @@ public class DotnetMakePackages
 
     public  void Run (string version)
     {
-        var packtool = Directory.GetDirectories("C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages\\microsoft.windows.sdk.buildtools\\" , "x64" , new EnumerationOptions() { RecurseSubdirectories = true }).First();
-        var makeappx = Directory.GetFiles(packtool).Single( x => x.EndsWith("makeappx.exe"));
-        var signtool = Directory.GetFiles(packtool).Single(x => x.EndsWith("signtool.exe"));
+        var packtoolfolder = Directory.GetDirectories("C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages\\microsoft.windows.sdk.buildtools\\" , "x64" , new EnumerationOptions() { RecurseSubdirectories = true }).First();
+        var makeappx = Directory.GetFiles(packtoolfolder).Single( x => x.EndsWith("makeappx.exe"));
+        var signtool = Directory.GetFiles(packtoolfolder).Single(x => x.EndsWith("signtool.exe"));
 
         string rootPath = "E:\\Projects\\EroMangaManager";
         string winappcsproj = "E:\\Projects\\EroMangaManager\\WinApp\\WinApp.csproj";
-        string unoappcsproj = "E:\\Projects\\EroMangaManager\\UnoApp\\UnoApp\\UnoApp.csproj";
+        string unoappcsproj = "E:\\Projects\\EroMangaManager\\UnoApp\\UnoApp.csproj";
         string binPath_WinApp= "E:\\Projects\\EroMangaManager/WinApp/bin";
-        string unorelease = "E:\\Projects\\EroMangaManager\\UnoApp\\UnoApp\\bin\\Release\\net10.0-android";
+        string unorelease = "E:\\Projects\\EroMangaManager\\UnoApp\\bin\\Release\\net10.0-android";
         var publishDirectory = new  DirectoryInfo("E:\\Projects\\EroMangaManager\\publish");
         string pfxPath = "E:\\Projects\\EroMangaManager\\DJDQfff_new.pfx";
         string pfxPassword = Environment.GetEnvironmentVariable("MADAO_PASSWORD");
