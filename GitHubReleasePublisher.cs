@@ -1,5 +1,7 @@
 ﻿using Octokit;
 
+namespace Tools;
+
 public class GitHubReleasePublisher
 {
     private readonly GitHubClient _client;
@@ -28,7 +30,7 @@ public class GitHubReleasePublisher
 
         // 2. 过滤存在的文件
         var validFiles = files.Where(File.Exists).ToList();
-        if (!validFiles.Any())
+        if (validFiles.Count == 0)
             throw new InvalidOperationException("没有有效的文件可上传");
 
         // 3. 创建 Release（处理 tag 冲突），失败全流程重试

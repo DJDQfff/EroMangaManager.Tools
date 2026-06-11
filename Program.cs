@@ -1,10 +1,4 @@
-﻿    using System.Diagnostics;
-using System.Diagnostics;
-using System.Net;
-using System.Net.Http.Headers;
-
-using Tools;
-using Octokit;
+﻿using Tools;
 
 using static System.Console;
 Console.WriteLine("Hello, World!");

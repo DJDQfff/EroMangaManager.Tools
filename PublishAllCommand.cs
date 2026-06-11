@@ -4,22 +4,25 @@ using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
-public class DotnetMakePackages 
-{
-    public   List<string> Files { get; } = [];
 
-    public  void Run (string version)
+namespace Tools;
+
+public class DotnetMakePackages
+{
+    public List<string> Files { get; } = [];
+
+    public void Run (string version)
     {
         var packtoolfolder = Directory.GetDirectories("C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages\\microsoft.windows.sdk.buildtools\\" , "x64" , new EnumerationOptions() { RecurseSubdirectories = true }).First();
-        var makeappx = Directory.GetFiles(packtoolfolder).Single( x => x.EndsWith("makeappx.exe"));
+        var makeappx = Directory.GetFiles(packtoolfolder).Single(x => x.EndsWith("makeappx.exe"));
         var signtool = Directory.GetFiles(packtoolfolder).Single(x => x.EndsWith("signtool.exe"));
 
         string rootPath = "E:\\Projects\\EroMangaManager";
         string winappcsproj = "E:\\Projects\\EroMangaManager\\WinApp\\WinApp.csproj";
         string unoappcsproj = "E:\\Projects\\EroMangaManager\\UnoApp\\UnoApp.csproj";
-        string binPath_WinApp= "E:\\Projects\\EroMangaManager/WinApp/bin";
+        string binPath_WinApp = "E:\\Projects\\EroMangaManager/WinApp/bin";
         string unorelease = "E:\\Projects\\EroMangaManager\\UnoApp\\bin\\Release\\net10.0-android";
-        var publishDirectory = new  DirectoryInfo("E:\\Projects\\EroMangaManager\\publish");
+        var publishDirectory = new DirectoryInfo("E:\\Projects\\EroMangaManager\\publish");
         string pfxPath = "E:\\Projects\\EroMangaManager\\DJDQfff_new.pfx";
         string pfxPassword = Environment.GetEnvironmentVariable("MADAO_PASSWORD");
         string msixbundleFIle = $"E:\\Projects\\EroMangaManager\\publish\\{version}.msixbundle";
@@ -32,7 +35,7 @@ public class DotnetMakePackages
             ["ARM64"] = "win-arm64"
         };
         Files.Add("E:\\Projects\\EroMangaManager\\DJDQfff_certificate.cer");
-        foreach(var platform in platforms)
+        foreach (var platform in platforms)
         {
 
             var tempDirectory = Directory.CreateTempSubdirectory().FullName;
@@ -44,14 +47,14 @@ public class DotnetMakePackages
             var files = Directory.EnumerateFiles(folder , $"*{platform}.msix" , new EnumerationOptions() { RecurseSubdirectories = true });
             var msix = files.Single();
             var target = Path.Combine(publishDirectory.FullName , $"{Path.GetFileName(msix)}");
-            File.Copy(msix , target,true);
+            File.Copy(msix , target , true);
 
             Files.Add(msix);
         }
 
-        Process.Start(makeappx, $"bundle /o /d \"{publishDirectory.FullName}\" /p \"{msixbundleFIle}\"").WaitForExit();
+        Process.Start(makeappx , $"bundle /o /d \"{publishDirectory.FullName}\" /p \"{msixbundleFIle}\"").WaitForExit();
 
-        
+
         Process
             .Start(signtool , $"sign /fd SHA256 /a /f \"{pfxPath}\" /p {pfxPassword}  \"{msixbundleFIle}\"")
             .WaitForExit();
@@ -68,8 +71,8 @@ public class DotnetMakePackages
             var apks = Directory.EnumerateFiles(folder , $"*-Signed.apk" , new EnumerationOptions() { RecurseSubdirectories = true });
             var apk = apks.Single();
             var newapk = apk.Replace(".apk" , $"-{runtime}.apk");
-            File.Move(apk , newapk,true);
-            Files.Add(newapk );
+            File.Move(apk , newapk , true);
+            Files.Add(newapk);
         }
     }
     static void Run (string fileName , string arguments , string workingDir)
