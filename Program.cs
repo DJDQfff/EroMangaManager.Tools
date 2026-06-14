@@ -9,7 +9,7 @@ var publishversion = Path.Combine(slnfolder , "publish" , slnfolder);
 var publisher = new GitHubReleasePublisher("DJDQfff" , "EroMangaManager");
 var files = Directory.EnumerateFiles(publishversion);
 
-await publisher.PublishAsync(version , files.ToList());
+await publisher.PublishAsync(version , [.. files]);
 return;
 
 DotnetMakePackages maker = new(version ,slnfolder);

@@ -5,15 +5,15 @@ namespace Tools;
 public class DotnetMakePackages
 {
     public List<string> Files { get; } = [];
-    string rootPath ;
-    private string pfxPath;
-    private string pfxPassword = Environment.GetEnvironmentVariable("MADAO_PASSWORD");
+    private readonly string rootPath ;
+    private readonly string pfxPath;
+    private readonly string pfxPassword = Environment.GetEnvironmentVariable("MADAO_PASSWORD");
     private readonly string version;
     private readonly string packtoolfolder;
     private readonly string makeappx;
     private readonly string signtool;
     private readonly string msixbundleFIle;
-    string? publishversionfolder;
+    private readonly string? publishversionfolder;
     private readonly string slnPath;
     public DotnetMakePackages (string _version,string slnFolder)
     {
@@ -56,7 +56,7 @@ public class DotnetMakePackages
         };
         foreach (var platform in platforms)
         {
-            var tempDirectory = Directory.CreateTempSubdirectory().FullName;
+            //var tempDirectory = Directory.CreateTempSubdirectory().FullName;
             //Process.Start("dotnet" ,
             //    $" restore {winappcsproj}" +
             //    $" -p:TargetFramework={targetframwork}")
@@ -123,7 +123,7 @@ public class DotnetMakePackages
 
         foreach (var runtime in runtimeidentifiers)
         {
-            var tempDirectory = Directory.CreateTempSubdirectory().FullName;
+            //var tempDirectory = Directory.CreateTempSubdirectory().FullName;
             // 发布 APK
             Run("dotnet" , $"publish \"{unoappcsproj}\" -f {targetframework} -r {runtime} -c Release" , rootPath);
 
@@ -146,10 +146,7 @@ public class DotnetMakePackages
         foreach (var b_o in bin_obj)
             {
             var objfolder = directoryinfo. GetDirectories(b_o).SingleOrDefault();
-            if (objfolder != null)
-            {
-                    objfolder.Delete(true);
-            }
+            objfolder?.Delete(true);
 
             }
 
