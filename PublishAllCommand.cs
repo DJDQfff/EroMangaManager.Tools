@@ -7,18 +7,19 @@ public class DotnetMakePackages
     public List<string> Files { get; } = [];
     private readonly string rootPath ;
     private readonly string pfxPath;
-    private readonly string pfxPassword;
+    private readonly string pfxPassword=null!;
     private readonly string version;
     private readonly string packtoolfolder;
     private readonly string makeappx;
     private readonly string signtool;
     private readonly string msixbundleFIle;
-    private readonly string? publishversionfolder;
+    private readonly string publishversionfolder;
     private readonly string slnPath;
     public DotnetMakePackages (string _version,string slnFolder)
     {
         rootPath = slnFolder;
-        slnPath = Directory.GetFiles(rootPath , "*.slnx").FirstOrDefault();
+        slnPath = Directory.GetFiles(rootPath , "*.slnx").First();
+        pfxPassword = Environment.GetEnvironmentVariable("MADAO_PASSWORD") ?? throw new ArgumentException("环境变量：证书密码未配置");
 
         // ... 其他原有代码保持不变
         version = _version;
@@ -30,10 +31,9 @@ public class DotnetMakePackages
         makeappx = Directory.GetFiles(packtoolfolder).Single(x => x.EndsWith("makeappx.exe"));
         signtool = Directory.GetFiles(packtoolfolder).Single(x => x.EndsWith("signtool.exe"));
 
-         publishversionfolder = Path.Combine(rootPath,"publish" , version);
+         publishversionfolder = Path.Combine(slnFolder,"publish" , version);
         Directory.CreateDirectory(publishversionfolder);
 
-        pfxPassword = Environment.GetEnvironmentVariable("MADAO_PASSWORD");
     }
     public void BuildMsix ()
     {
