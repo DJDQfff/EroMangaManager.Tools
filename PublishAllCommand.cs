@@ -7,7 +7,7 @@ public class DotnetMakePackages
     public List<string> Files { get; } = [];
     private readonly string rootPath ;
     private readonly string pfxPath;
-    private readonly string pfxPassword = Environment.GetEnvironmentVariable("MADAO_PASSWORD");
+    private readonly string pfxPassword;
     private readonly string version;
     private readonly string packtoolfolder;
     private readonly string makeappx;
@@ -19,6 +19,7 @@ public class DotnetMakePackages
     {
         rootPath = slnFolder;
         slnPath = Directory.GetFiles(rootPath , "*.slnx").FirstOrDefault();
+
         // ... 其他原有代码保持不变
         version = _version;
         msixbundleFIle = Path.Combine(rootPath , "publish" , $"{version}.msixbundle");
@@ -32,6 +33,7 @@ public class DotnetMakePackages
          publishversionfolder = Path.Combine(rootPath,"publish" , version);
         Directory.CreateDirectory(publishversionfolder);
 
+        pfxPassword = Environment.GetEnvironmentVariable("MADAO_PASSWORD");
     }
     public void BuildMsix ()
     {

@@ -1,56 +1,93 @@
-﻿using System.Diagnostics;
-using System.Text.RegularExpressions;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
+using static System.Console;
 namespace Tools;
 
 internal class Class1
 {
-    public static void Run ()
+     public void CheckNonOrigin ()
     {
-
-        var workfolder = @"E:\Projects\EroMangaManager\WinApp";
-
-        var cmdfolder =
-            @"C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages\microsoft.windows.sdk.buildtools\10.0.26100.7705\bin\10.0.26100.0\x64";
-
-        if (!Directory.Exists(cmdfolder))
+        Console.WriteLine("Hello, World!");
+        var directory = new DirectoryInfo(@"D:\Downloads\bika_downloads\commies");
+        var directories = directory.EnumerateDirectories();
+        foreach (var d in directories)
         {
-            Console.WriteLine("bin目录不存在");
-            return;
+            var c = d.GetDirectories();
+            if (c.Length != 1)
+            {
+                CommonLibrary.ExplorerFile.ExplorerSelectFile(d.FullName);
+                Console.Read();
+            }
+        }
+    }
+    public void CompareBenzi ()
+    {
+        // See https://aka.ms/new-console-template for more information
+
+
+        var folder_disk = "D:\\复制到TF卡";
+        var folder_sdcard = "F:\\本子";
+        CompareFiles(folder_disk , folder_sdcard);
+        //CompareFoldersAndFiles(folder , sdcard);
+        static void CompareFoldersAndFiles (string folder1 , string folder2)
+        {
+            var folder_mangas = Directory.GetDirectories(folder1).Select(x => Path.GetFileName(x));
+            var file_mangas = Directory.GetFiles(folder2).Select(x => Path.GetFileNameWithoutExtension(x));
+            var to_delete = folder_mangas.Except(file_mangas).ToList();
+            var path1 = Directory.GetDirectories(folder1);
+            int count = 0;
+            foreach (var file in path1)
+            {
+                if (to_delete.Contains(Path.GetFileName(file)))
+                {
+                    count++;
+                    Directory.Delete(file , true);
+                }
+            }
+            Console.WriteLine(count);
         }
 
-        var makeappx = Path.Combine(cmdfolder , "makeappx.exe");
-        var signtool = Path.Combine(cmdfolder , "signtool.exe");
-
-        var tempfolder = Directory.CreateTempSubdirectory();
-
-        var file = Path.Combine(tempfolder.FullName , "result.msixbundle");
-        var pfx = @"../../DJDQfff_new.pfx";
-        var password = "512131415zcb";
-
-        var appxmanifest = Directory.GetFiles(workfolder , "Package.appxmanifest")[0];
-        var lines = File.ReadAllText(appxmanifest);
-        string regexpattern = @"Version=""\S*""";
-        var version = Regex.Match(lines , regexpattern).Value.Replace("Version=" , "").Trim('\"');
-        var index = 0;
-
-        var msixs = Directory.GetFiles(
-            workfolder ,
-            $"*_{version}_*.msix" ,
-            SearchOption.AllDirectories
-        );
-        foreach (var m in msixs)
+        static void CompareFiles (string folder1 , string folder2)
         {
-            var target = Path.Combine(tempfolder.FullName , $"{index++}.msix");
-            File.Copy(m , target);
+            var files1 = Directory.GetFiles(folder1).Select(x => Path.GetFileNameWithoutExtension(x));
+            var files2 = Directory.GetFiles(folder2).Select(x => Path.GetFileNameWithoutExtension(x));
+            var single = files1.Except(files2).ToList();
+            foreach (var item in single)
+            {
+                WriteLine(item);
+            }
+            WriteLine(single.Count);
+            var path1 = Directory.GetFiles(folder1);
+            foreach (var file in path1)
+            {
+                if (single.Contains(Path.GetFileNameWithoutExtension(file)))
+                {
+                    File.Delete(file);
+                }
+            }
         }
 
-        Process.Start(makeappx , $"bundle /d \"{tempfolder}\" /p \"{file}\"").WaitForExit();
+         void CompareFolders (string folder1 , string folder2)
+        {
+            var files1 = Directory.GetDirectories(folder1).Select(x => Path.GetFileNameWithoutExtension(x));
+            var files2 = Directory.GetDirectories(folder2).Select(x => Path.GetFileNameWithoutExtension(x));
+            var single = files1.Except(files2).ToList();
+            foreach (var item in single)
+            {
+                WriteLine(item);
+            }
+            WriteLine(single.Count);
+            var path1 = Directory.GetDirectories(folder1);
+            foreach (var file in path1)
+            {
+                if (single.Contains(Path.GetFileNameWithoutExtension(file)))
+                {
+                    Directory.Delete(file , true);
+                }
+            }
+        }
 
-        Process
-            .Start(signtool , $"sign /fd SHA256 /a /f \"{pfx}\" /p {password}  \"{file}\"")
-            .WaitForExit();
-
-        File.Move(file , Path.Combine(workfolder , $"{version}.msixbundle"));
     }
 }
