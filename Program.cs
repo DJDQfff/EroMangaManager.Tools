@@ -4,7 +4,7 @@ using Tools;
 
 Console.WriteLine("Hello, World!");
 
-var version = "2026.6.11";
+var version = "2026.6.15";
 var slnfolder = "E:\\Projects\\EroMangaManager";
 var publishversion = Path.Combine(slnfolder , "publish" , slnfolder);
 var files = Directory.EnumerateFiles(publishversion);
