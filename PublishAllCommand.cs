@@ -16,19 +16,19 @@ public class DotnetMakePackages
     readonly string msixbundleFIle;
     readonly string publishversionfolder;
     readonly string slnPath;
-    string MSBuildExe = @"C:\Program Files\Microsoft Visual Studio\18\Community\MSBuild\Current\Bin\MSBuild.exe";
-    string Configuration = "Release";
-    string AndroidTargetFramwork = "net10.0-android";
+    readonly string MSBuildExe = @"C:\Program Files\Microsoft Visual Studio\18\Community\MSBuild\Current\Bin\MSBuild.exe";
+    readonly string Configuration = "Release";
+    readonly string AndroidTargetFramwork = "net10.0-android";
 
-    string WindowsTargetFrameWork = "net10.0-windows10.0.26100";
-    string[]? WindowsPlatforms = ["x64" , "x86" , "ARM64"];
-    Dictionary<string , string> WindowsRuntimeIdentifiers = new()
+    readonly string WindowsTargetFrameWork = "net10.0-windows10.0.26100";
+    readonly string[]? WindowsPlatforms = ["x64" , "x86" , "ARM64"];
+    readonly Dictionary<string , string> WindowsRuntimeIdentifiers = new()
     {
         ["x64"] = "win-x64" ,
         ["x86"] = "win-x86" ,
         ["ARM64"] = "win-arm64"
     };
-    readonly string[] AndroidRuntimeIdentifiers = ["android-arm64" , "android-arm" ] ;
+    readonly string[] AndroidRuntimeIdentifiers  = ["android-arm64" , "android-arm" ] ;
 
     public DotnetMakePackages (string _version , string slnFolder)
     {
