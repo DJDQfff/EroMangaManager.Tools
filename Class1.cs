@@ -3,7 +3,7 @@ namespace Tools;
 
 internal class Class1
 {
-     public void CheckNonOrigin ()
+    public void CheckNonOrigin ()
     {
         Console.WriteLine("Hello, World!");
         var directory = new DirectoryInfo(@"D:\Downloads\bika_downloads\commies");

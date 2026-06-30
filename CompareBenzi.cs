@@ -15,7 +15,7 @@ internal class CompareBenzi
         CompareFoldersAndFiles(folder_disk , folder_sdcard);
 
     }
-     void CompareFoldersAndFiles (string folder1 , string folder2)
+    void CompareFoldersAndFiles (string folder1 , string folder2)
     {
         var folder_mangas = Directory.GetDirectories(folder1).Select(x => Path.GetFileName(x));
         var file_mangas = Directory.GetFiles(folder2).Select(x => Path.GetFileNameWithoutExtension(x));
@@ -33,7 +33,7 @@ internal class CompareBenzi
         Console.WriteLine(count);
     }
 
-     void CompareFiles (string folder1 , string folder2)
+    void CompareFiles (string folder1 , string folder2)
     {
         var files1 = Directory.GetFiles(folder1).Select(x => Path.GetFileNameWithoutExtension(x));
         var files2 = Directory.GetFiles(folder2).Select(x => Path.GetFileNameWithoutExtension(x));
@@ -53,7 +53,7 @@ internal class CompareBenzi
         }
     }
 
-     void CompareFolders (string folder1 , string folder2)
+    void CompareFolders (string folder1 , string folder2)
     {
         var files1 = Directory.GetDirectories(folder1).Select(x => Path.GetFileNameWithoutExtension(x));
         var files2 = Directory.GetDirectories(folder2).Select(x => Path.GetFileNameWithoutExtension(x));

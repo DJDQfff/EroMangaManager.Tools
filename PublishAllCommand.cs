@@ -21,14 +21,14 @@ public class DotnetMakePackages
     readonly string AndroidTargetFramwork = "net10.0-android";
 
     readonly string WindowsTargetFrameWork = "net10.0-windows10.0.26100";
-    readonly string[]? WindowsPlatforms = ["x64" , "x86" , "ARM64"];
+    readonly string[] WindowsPlatforms = ["x64" , "x86" , "ARM64"];
     readonly Dictionary<string , string> WindowsRuntimeIdentifiers = new()
     {
         ["x64"] = "win-x64" ,
         ["x86"] = "win-x86" ,
         ["ARM64"] = "win-arm64"
     };
-    readonly string[] AndroidRuntimeIdentifiers  = ["android-arm64" , "android-arm" ] ;
+    readonly string[] AndroidRuntimeIdentifiers = ["android-arm64" , "android-arm"];
 
     public DotnetMakePackages (string _version , string slnFolder)
     {
@@ -97,7 +97,7 @@ public class DotnetMakePackages
                 Files.Add(target);
 
             }
-            catch(Exception ex) { Console.WriteLine(ex.Message); }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
 
         }
 
@@ -145,14 +145,14 @@ public class DotnetMakePackages
                 Files.Add(newapk);
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
         }
     }
     [Obsolete]
-     void CleanBuildDirectories ()
+    void CleanBuildDirectories ()
     {
         string[] bin_obj = ["bin" , "obj"];
         string[] folders = ["WinApp" , "Database" , "Server" , "Core" , "UnoLibrary" , "UnoApp"];
@@ -185,7 +185,7 @@ public class DotnetMakePackages
         proc?.WaitForExit();
         if (proc?.ExitCode != 0)
         {
-            throw new Exception($"命令执行失败 (ExitCode: {proc.ExitCode}): {fileName} {arguments}");
+            throw new Exception($"命令执行失败 (ExitCode: {proc?.ExitCode}): {fileName} {arguments}");
         }
     }
 }
