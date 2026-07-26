@@ -8,7 +8,7 @@ public class GitHubReleasePublisher
     private readonly string _owner;
     private readonly string _repo;
 
-    public GitHubReleasePublisher (string owner , string repo)
+    public GitHubReleasePublisher(string owner, string repo)
     {
         _owner = owner;
         _repo = repo;
@@ -19,11 +19,11 @@ public class GitHubReleasePublisher
 
         _client = new GitHubClient(new ProductHeaderValue("EroMangaManager"))
         {
-            Credentials = new Credentials(token)
+            Credentials = new Credentials(token),
         };
     }
 
-    public async Task PublishAsync (string version , List<string> files)
+    public async Task PublishAsync(string version, List<string> files)
     {
         // 1. 等待网络连接
         await WaitForConnectionAsync();
@@ -37,12 +37,12 @@ public class GitHubReleasePublisher
         var release = await CreateReleaseWithRetryAsync(version);
 
         // 4. 上传文件，失败全流程重试
-        await UploadFilesWithRetryAsync(release , validFiles);
+        await UploadFilesWithRetryAsync(release, validFiles);
 
         Console.WriteLine($"✅ 发布完成: v{version}");
     }
 
-    private async Task WaitForConnectionAsync ()
+    private async Task WaitForConnectionAsync()
     {
         while (true)
         {
@@ -60,7 +60,7 @@ public class GitHubReleasePublisher
         }
     }
 
-    private async Task<Release> CreateReleaseWithRetryAsync (string version)
+    private async Task<Release> CreateReleaseWithRetryAsync(string version)
     {
         while (true)
         {
@@ -69,13 +69,13 @@ public class GitHubReleasePublisher
                 var tag = await GenerateUniqueTagAsync(version);
                 var newRelease = new NewRelease(tag)
                 {
-                    Name = $"Release {tag}" ,
-                    Body = $"版本 {tag}" ,
-                    Draft = false ,
-                    Prerelease = false
+                    Name = $"Release {tag}",
+                    Body = $"版本 {tag}",
+                    Draft = false,
+                    Prerelease = false,
                 };
 
-                var release = await _client.Repository.Release.Create(_owner , _repo , newRelease);
+                var release = await _client.Repository.Release.Create(_owner, _repo, newRelease);
                 Console.WriteLine($"✅ Release 创建成功: {tag}");
                 return release;
             }
@@ -87,7 +87,7 @@ public class GitHubReleasePublisher
         }
     }
 
-    private async Task UploadFilesWithRetryAsync (Release release , List<string> files)
+    private async Task UploadFilesWithRetryAsync(Release release, List<string> files)
     {
         while (true)
         {
@@ -101,12 +101,14 @@ public class GitHubReleasePublisher
                     using var stream = File.OpenRead(file);
                     var upload = new ReleaseAssetUpload
                     {
-                        FileName = fileName ,
-                        ContentType = file.EndsWith(".apk") ? "application/vnd.android.package-archive" : "application/octet-stream" ,
-                        RawData = stream
+                        FileName = fileName,
+                        ContentType = file.EndsWith(".apk")
+                            ? "application/vnd.android.package-archive"
+                            : "application/octet-stream",
+                        RawData = stream,
                     };
 
-                    await _client.Repository.Release.UploadAsset(release , upload);
+                    await _client.Repository.Release.UploadAsset(release, upload);
                 }
 
                 Console.WriteLine("✅ 所有文件上传完成");
@@ -118,7 +120,9 @@ public class GitHubReleasePublisher
 
                 // 删除失败的 Release，全流程重来
                 try
-                { await _client.Repository.Release.Delete(_owner , _repo , release.Id); }
+                {
+                    await _client.Repository.Release.Delete(_owner, _repo, release.Id);
+                }
                 catch { }
 
                 Console.WriteLine("重新开始发布流程...");
@@ -131,12 +135,13 @@ public class GitHubReleasePublisher
         }
     }
 
-    private async Task<string> GenerateUniqueTagAsync (string version)
+    private async Task<string> GenerateUniqueTagAsync(string version)
     {
         // 去除每一段的前导零，例如 "2026.05.15" -> "2026.5.15"
-        var parts = version.Split('.')
+        var parts = version
+            .Split('.')
             .Select(p => p.TrimStart('0').Length > 0 ? p.TrimStart('0') : "0");
-        var cleanVersion = string.Join("." , parts);
+        var cleanVersion = string.Join(".", parts);
 
         var baseTag = $"v{cleanVersion}";
         var tag = baseTag;
@@ -146,7 +151,7 @@ public class GitHubReleasePublisher
         {
             try
             {
-                await _client.Git.Reference.Get(_owner , _repo , $"tags/{tag}");
+                await _client.Git.Reference.Get(_owner, _repo, $"tags/{tag}");
                 tag = $"{baseTag}-{suffix}";
                 suffix++;
             }

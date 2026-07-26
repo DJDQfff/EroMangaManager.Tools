@@ -1,6 +1,4 @@
-﻿
-global using static System.Console;
-
+﻿global using static System.Console;
 using Tools;
 
 Console.WriteLine("Hello, World!");
@@ -8,18 +6,13 @@ Console.WriteLine("Hello, World!");
 var version = "2026.7.26";
 var slnfolder = "E:\\Projects\\EroMangaManager";
 
-var publisher = new GitHubReleasePublisher("DJDQfff" , "EroMangaManager");
+var publisher = new GitHubReleasePublisher("DJDQfff", "EroMangaManager");
 
-DotnetMakePackages maker = new(version , slnfolder);
+DotnetMakePackages maker = new(version, slnfolder);
 
 //maker. CleanThenRestoreSlnx();
 
 maker.BuildMsix();
 maker.PubllishAPK();
 
-
-await publisher.PublishAsync(version , maker.Files);
-
-
-
-
+await publisher.PublishAsync(version, maker.Files);
