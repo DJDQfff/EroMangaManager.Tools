@@ -5,7 +5,7 @@ using Tools;
 
 Console.WriteLine("Hello, World!");
 
-var version = "2026.7.21";
+var version = "2026.7.26";
 var slnfolder = "E:\\Projects\\EroMangaManager";
 
 var publisher = new GitHubReleasePublisher("DJDQfff" , "EroMangaManager");
