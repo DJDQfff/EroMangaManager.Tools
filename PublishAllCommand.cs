@@ -31,7 +31,7 @@ public class DotnetMakePackages
         ["x86"] = "win-x86",
         ["ARM64"] = "win-arm64",
     };
-    readonly string[] AndroidRuntimeIdentifiers = ["android-arm64", "android-arm"];
+    readonly string[] AndroidRuntimeIdentifiers = ["android-arm", "android-arm64"];
 
     public DotnetMakePackages(string _version, string slnFolder)
     {
